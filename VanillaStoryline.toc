@@ -1,5 +1,5 @@
 ## Interface: 11200
-## Title: VanillaStoryline
+## Title-zhCN: 任务界面动画对话
 ## Author: |cffABD473Renew @ nostalrius.org
 ## Version: 1.0.0
 ## Notes: VanillaStoryline - by |cff00FF00Renew |r@ nostalrius.org

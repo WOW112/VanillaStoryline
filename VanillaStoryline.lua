@@ -95,7 +95,7 @@ function storyline:OnEvent()
 		if not StorylineOptions then
 			StorylineOptions = {}
 			StorylineOptions.HideBlizzardFrames = 1
-			StorylineOptions.TextSpeed = 2
+			StorylineOptions.TextSpeed = 10
 			StorylineOptions.WindowScale = 1
 			StorylineOptions.WindowLevel = 4
 			StorylineOptions.FontSize = 14
@@ -774,7 +774,7 @@ function storyline.QuestDetail:ConfigureFrame()
 	self.GetQuest.Accept.Button:SetHighlightTexture("Interface\\AddOns\\VanillaStoryline\\Assets\\Images\\PetBattle-SelectedPetGlow")
 	self.GetQuest.Accept.Button:SetScript("OnEnter",function()
 														GameTooltip:SetOwner(self.GetQuest.Accept, "ANCHOR_TOPRIGHT",20,-80);
-														GameTooltip:SetText("I accept.", 1, 1, 1, 1, 1);
+														GameTooltip:SetText("我接受", 1, 1, 1, 1, 1);
 														GameTooltip:Show()
 													end)
 	self.GetQuest.Accept.Button:SetScript("OnLeave",function() GameTooltip:Hide() end)
@@ -795,7 +795,7 @@ function storyline.QuestDetail:ConfigureFrame()
 	self.GetQuest.Decline.Button:SetHighlightTexture("Interface\\AddOns\\VanillaStoryline\\Assets\\Images\\PetBattle-SelectedPetGlow")
 	self.GetQuest.Decline.Button:SetScript("OnEnter",function()
 														GameTooltip:SetOwner(self.GetQuest.Decline, "ANCHOR_TOPRIGHT",20,-80);
-														GameTooltip:SetText("I refuse.", 1, 1, 1, 1, 1);
+														GameTooltip:SetText("我拒绝", 1, 1, 1, 1, 1);
 														GameTooltip:Show()
 													end)
 	self.GetQuest.Decline.Button:SetScript("OnLeave",function() GameTooltip:Hide() end)
@@ -888,7 +888,7 @@ function storyline.QuestProgress:ConfigureFrame()
 		self.Mainframe.Objective.Headline:SetHeight(70)
 		self.Mainframe.Objective.Headline:SetJustifyH("CENTER")
 		self.Mainframe.Objective.Headline:SetJustifyV("TOP")
-		self.Mainframe.Objective.Headline:SetText("Quest Objectives")
+		self.Mainframe.Objective.Headline:SetText("任务目标")
 		self.Mainframe.Objective.Headline:SetTextColor(1,0.75,0)
 		self.Mainframe.Objective.Headline:SetShadowOffset(1, -1)
 
@@ -899,7 +899,7 @@ function storyline.QuestProgress:ConfigureFrame()
 		self.Mainframe.Objective.ReqItemsText:SetHeight(50)
 		self.Mainframe.Objective.ReqItemsText:SetJustifyH("LEFT")
 		self.Mainframe.Objective.ReqItemsText:SetJustifyV("TOP")
-		self.Mainframe.Objective.ReqItemsText:SetText("Required:")
+		self.Mainframe.Objective.ReqItemsText:SetText("要求:")
 		self.Mainframe.Objective.ReqItemsText:SetTextColor(1,0.75,0)
 		self.Mainframe.Objective.ReqItemsText:SetShadowOffset(1, -1)
 
@@ -984,7 +984,7 @@ function storyline.QuestProgress:ConfigureFrame()
 			self.Mainframe.Objective.Block[2].TextFont:SetWidth(70)
 			self.Mainframe.Objective.Block[2].TextFont:SetJustifyH("LEFT")
 			self.Mainframe.Objective.Block[2].TextFont:SetJustifyV("CENTER")
-			self.Mainframe.Objective.Block[2].TextFont:SetText("TEST")
+			self.Mainframe.Objective.Block[2].TextFont:SetText("测试")
 			self.Mainframe.Objective.Block[2].TextFont:SetTextColor(0.95,0.95,0.95)
 			self.Mainframe.Objective.Block[2].TextFont:SetShadowOffset(1, -1)
 
@@ -1282,7 +1282,7 @@ function storyline.QuestComplete:ConfigureFrame()
 		self.Mainframe.Reward.Headline:SetHeight(70)
 		self.Mainframe.Reward.Headline:SetJustifyH("CENTER")
 		self.Mainframe.Reward.Headline:SetJustifyV("TOP")
-		self.Mainframe.Reward.Headline:SetText("Rewards")
+		self.Mainframe.Reward.Headline:SetText("奖励")
 		self.Mainframe.Reward.Headline:SetTextColor(1,0.75,0)
 		self.Mainframe.Reward.Headline:SetShadowOffset(1, -1)
 
@@ -1293,7 +1293,7 @@ function storyline.QuestComplete:ConfigureFrame()
 		self.Mainframe.Reward.ReceiveText:SetHeight(50)
 		self.Mainframe.Reward.ReceiveText:SetJustifyH("LEFT")
 		self.Mainframe.Reward.ReceiveText:SetJustifyV("TOP")
-		self.Mainframe.Reward.ReceiveText:SetText("You will Receive:")
+		self.Mainframe.Reward.ReceiveText:SetText("你将得到:")
 		self.Mainframe.Reward.ReceiveText:SetTextColor(1,1,1)
 		self.Mainframe.Reward.ReceiveText:SetShadowOffset(1, -1)
 
@@ -1673,7 +1673,7 @@ function storyline.OptionsFrame:ConfigureFrame()
 		 self.SpeedFont:SetWidth(200)
 		 self.SpeedFont:SetJustifyH("LEFT")
 		 self.SpeedFont:SetJustifyV("TOP")
-		 self.SpeedFont:SetText("Textspeed:")
+		 self.SpeedFont:SetText("文本的速度:")
 		 self.SpeedFont:SetTextColor(1,1,1)
 		 
 		 -- scale Frame
@@ -1699,7 +1699,7 @@ function storyline.OptionsFrame:ConfigureFrame()
 		 self.ScaleButton:SetPoint("BOTTOMRIGHT", 50, 0)
 		self.ScaleButton:SetWidth(40)
 		 self.ScaleButton:SetHeight(20)
-		 self.ScaleButton:SetText("Set!")
+		 self.ScaleButton:SetText("设置!")
 		 self.ScaleButton:SetScript("OnClick",function() storyline.Background:SetScale(storyline.Options.WindowScale) end)
 		
 		self.ScaleFont = self.ScaleSlider:CreateFontString(nil, "OVERLAY")
@@ -1708,7 +1708,7 @@ function storyline.OptionsFrame:ConfigureFrame()
 		 self.ScaleFont:SetWidth(200)
 		 self.ScaleFont:SetJustifyH("LEFT")
 		 self.ScaleFont:SetJustifyV("TOP")
-		 self.ScaleFont:SetText("Window Scale:")
+		 self.ScaleFont:SetText("窗口大小:")
 		 self.ScaleFont:SetTextColor(1,1,1)
 		 
 		 -- StorylineOptions.FontSize
@@ -1737,7 +1737,7 @@ function storyline.OptionsFrame:ConfigureFrame()
 		 self.FontSizeFont:SetWidth(200)
 		 self.FontSizeFont:SetJustifyH("LEFT")
 		 self.FontSizeFont:SetJustifyV("TOP")
-		 self.FontSizeFont:SetText("Font Size:")
+		 self.FontSizeFont:SetText("字体大小:")
 		 self.FontSizeFont:SetTextColor(1,1,1)
 		 
 		-- move Frame
@@ -1757,7 +1757,7 @@ function storyline.OptionsFrame:ConfigureFrame()
 			 self.MoveFont:SetWidth(200)
 			 self.MoveFont:SetJustifyH("RIGHT")
 			 self.MoveFont:SetJustifyV("CENTER")
-			 self.MoveFont:SetText("Moveable:")
+			 self.MoveFont:SetText("可移动的:")
 			 self.MoveFont:SetTextColor(1,1,1)
 		
 		-- hide blizzard frames
@@ -1778,7 +1778,7 @@ function storyline.OptionsFrame:ConfigureFrame()
 				self.HideFont:SetWidth(200)
 				self.HideFont:SetJustifyH("RIGHT")
 				self.HideFont:SetJustifyV("CENTER")
-				self.HideFont:SetText("Hide Blizzard Frames:")
+				self.HideFont:SetText("隐藏暴雪框架:")
 				self.HideFont:SetTextColor(1,1,1)
 
 			
@@ -1886,7 +1886,7 @@ function storyline.OptionsFrame:ConfigureFrame()
 				self.HideFont:SetWidth(200)
 				self.HideFont:SetJustifyH("RIGHT")
 				self.HideFont:SetJustifyV("CENTER")
-				self.HideFont:SetText("Frame Level:")
+				self.HideFont:SetText("框架等级:")
 				self.HideFont:SetTextColor(1,1,1)
 
 		-- version
@@ -1896,7 +1896,7 @@ function storyline.OptionsFrame:ConfigureFrame()
 		 self.VersionFont:SetWidth(800)
 		 self.VersionFont:SetJustifyH("CENTER")
 		 self.VersionFont:SetJustifyV("BOTTOM")
-		 self.VersionFont:SetText("Version: "..storyline.Options.Version.." by Renew @ Nostalrius.org")
+		 self.VersionFont:SetText("版本: "..storyline.Options.Version.." by 60addons.com 汉化")
 		 self.VersionFont:SetTextColor(1,1,1,0.5)
 
 		 -- hide
@@ -1952,7 +1952,7 @@ function storyline.Text:ConfigureFrame()
 		self.Banner:SetWidth(260)
 		self.Banner:SetJustifyH("CENTER")
 		self.Banner:SetJustifyV("CENTER")
-		self.Banner:SetText("Quest Title")
+		self.Banner:SetText("任务标题")
 		self.Banner:SetTextColor(0.95,0.95,0.95)
 		self.Banner:SetShadowOffset(1, -1)
 
@@ -1963,7 +1963,7 @@ function storyline.Text:ConfigureFrame()
 		self.NPCName:SetWidth(300)
 		self.NPCName:SetJustifyH("RIGHT")
 		self.NPCName:SetJustifyV("TOP")
-		self.NPCName:SetText("NPC Name")
+		self.NPCName:SetText("NPC名字")
 		self.NPCName:SetTextColor(1,0.75,0)
 		self.NPCName:SetShadowOffset(1, -1)
 
@@ -1976,7 +1976,7 @@ function storyline.Text:ConfigureFrame()
 		self.Questtext.Font:SetHeight(0)
 		self.Questtext.Font:SetJustifyH("LEFT")
 		self.Questtext.Font:SetJustifyV("TOP")
-		self.Questtext.Font:SetText("TEST")
+		self.Questtext.Font:SetText("测试")
 		self.Questtext.Font:SetTextColor(1,1,0.4)
 
 	-- Continue Font
@@ -1987,7 +1987,7 @@ function storyline.Text:ConfigureFrame()
 		self.Questtext.Continue:SetHeight(20)
 		self.Questtext.Continue:SetJustifyH("LEFT")
 		self.Questtext.Continue:SetJustifyV("TOP")
-		self.Questtext.Continue:SetText("continue")
+		self.Questtext.Continue:SetText("继续说")
 		self.Questtext.Continue:SetTextColor(1,1,0.4)
 
 	-- Complete Font
@@ -1998,7 +1998,7 @@ function storyline.Text:ConfigureFrame()
 		self.Questtext.Complete:SetHeight(20)
 		self.Questtext.Complete:SetJustifyH("LEFT")
 		self.Questtext.Complete:SetJustifyV("TOP")
-		self.Questtext.Complete:SetText("Complete quest")
+		self.Questtext.Complete:SetText("完成任务")
 		self.Questtext.Complete:SetTextColor(1,1,0.4)
 
 end
@@ -2049,7 +2049,7 @@ function storyline:AcceptQuestOnClick()
 	storyline.Text.Questtext.Continue:Hide()
 
 	local ObjectiveText = GetObjectiveText()
-	storyline:ShowNPCText("Quest Objectives: "..ObjectiveText,0)
+	storyline:ShowNPCText("任务目标: "..ObjectiveText,0)
 end
 
 function storyline:ProgressQuest()
@@ -2104,7 +2104,7 @@ function storyline:ProgressQuestObjectives()
 	storyline.Text.Questtext.Continue:Hide()
 
 	local ObjectiveText = storyline:GetObjectiveText()
-	storyline:ShowNPCText("Quest Objectives: "..ObjectiveText,0)
+	storyline:ShowNPCText("任务目标: "..ObjectiveText,0)
 
 	-- completeable?
 	if IsQuestCompletable() then
