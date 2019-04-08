@@ -211,9 +211,7 @@ local function getQuestData(qTitle)
 	return "";
 end
 
---CHANGE:Shadovv: QuestFrame was implemented in cataclysm
 local function showQuestPortraitFrame()
-	--[[
 	if not Storyline_Data.config.hideOriginalFrames then
 		return;
 	end
@@ -222,7 +220,7 @@ local function showQuestPortraitFrame()
 		QuestFrame_ShowQuestPortrait(Storyline_NPCFrame, questPortrait, questPortraitText, questPortraitName, -3, -42);
 	else
 		QuestFrame_HideQuestPortrait();
-	end]]
+	end
 end
 
 --CHANGES:Lanrutcon: Sometimes, when the quest is auto-accept it doesn't hide the frame
@@ -232,8 +230,7 @@ local function acceptQuest()
 	else
 		if QuestFrame.autoQuest then
 			--AcknowledgeAutoAcceptQuest();		--MoP function that notices user that is a auto-aceept quest
-			--CHANGE:Shadovv: Quest is automatically accepted, closing the window
-			CloseQuest();
+			QuestFrame:Hide();
 		else
 			AcceptQuest();
 		end
@@ -572,9 +569,8 @@ eventHandlers["QUEST_PROGRESS"] = function()
 		Storyline_NPCFrameObjectivesContent.Objectives:Show();
 		contentHeight = contentHeight + 10 + Storyline_NPCFrameObjectivesContent.Objectives:GetHeight()
 	end
-	
-	--CHANGE:Shadovv: GetNumQuestCurrencies() was implemented in cataclysm
-	if GetNumQuestItems() > 0 or GetQuestMoneyToGet() > 0 then
+
+	if GetNumQuestItems() > 0 or GetNumQuestCurrencies() > 0 or GetQuestMoneyToGet() > 0 then
 		Storyline_NPCFrameObjectivesContent.RequiredItemText:Show();
 		local bestIcon = "Interface\\ICONS\\trade_archaeology_chestoftinyglassanimals";
 
@@ -614,9 +610,7 @@ eventHandlers["QUEST_PROGRESS"] = function()
 				isUsable = isUsable,
 			});
 		end
-		
-		--CHANGE:Shadovv: GetNumQuestCurrencies() was implemented in cataclysm
-		--[[
+
 		for i = 1, GetNumQuestCurrencies() do
 			local name, texture, numItems = GetQuestCurrencyInfo("required", i);
 			bestIcon = texture;
@@ -628,7 +622,7 @@ eventHandlers["QUEST_PROGRESS"] = function()
 				type = "currency",
 				rewardType = "required",
 			});
-		end]]
+		end
 
 		Storyline_NPCFrameObjectivesImage:SetTexture(bestIcon);
 
@@ -659,15 +653,13 @@ end
 eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	Storyline_NPCFrameRewards:Show();
 	setTooltipForSameFrame(Storyline_NPCFrameRewardsItem, "TOP", 0, 0, REWARDS, loc("SL_GET_REWARD"));
-	questHasRewards = false;
 
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 	-- Rewards structure
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	wipe(displayBuilder);
-	--local bestIcon = "Interface\\ICONS\\trade_archaeology_chestoftinyglassanimals";
-	local bestIcon = "Interface\\AddOns\\Storyline\\Artwork\\ICONS\\xp_icon";
+	local bestIcon = "Interface\\ICONS\\trade_archaeology_chestoftinyglassanimals";
 
 	-- XP
 	local xp = GetRewardXP();
@@ -709,8 +701,6 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	end
 
 	-- Skill points
-	--CHANGE:Shadovv: GetRewardSkillPoints() was implemented in cataclysm
-	--[[
 	local skillName, skillIcon, skillPoints = GetRewardSkillPoints();
 	if skillPoints then
 		skillName = skillName or "?";
@@ -724,7 +714,6 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	end
 
 	-- Currencies
-	--CHANGE:Shadovv: GetNumRewardCurrencies() was implemented in cataclysm
 	local currencyCount = GetNumRewardCurrencies();
 	if currencyCount > 0 then
 		for i = 1, currencyCount, 1 do -- Some quest reward several currencies
@@ -739,7 +728,7 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 				});
 			end
 		end
-	end]]
+	end
 
 	-- Item reward
 	if GetNumQuestChoices() == 1 or GetNumQuestRewards() > 0 then
@@ -798,7 +787,6 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 		Storyline_NPCFrameRewards.Content.RewardText1:Hide();
 	else
 		Storyline_NPCFrameRewards.Content.RewardText1:Show();
-		questHasRewards = true;
 	end
 	contentHeight = contentHeight + gridHeight;
 
@@ -807,7 +795,6 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	--*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 	if GetNumQuestChoices() > 1 then
-		questHasRewards = true;
 
 		if faction and faction:len() > 0 then
 			bestIcon = "Interface\\ICONS\\battleground_strongbox_gold_" .. faction;
@@ -848,7 +835,6 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	local spellReward = texture and (not isBoostSpell or IsCharacterNewlyBoosted()) and (not garrFollowerID or not C_Garrison.IsFollowerCollected(garrFollowerID));
 
 	if spellReward then
-		questHasRewards = true;
 
 		if isTradeskillSpell then
 			Storyline_NPCFrameRewards.Content.RewardTextSpell:SetText(REWARD_TRADESKILL_SPELL);
@@ -896,12 +882,6 @@ eventHandlers["QUEST_COMPLETE"] = function(eventInfo)
 	end
 
 	showQuestPortraitFrame();
-	
-	--CHANGE:TODO:Shadovv: There is no need for NPCFrameRewards, quest does not give any rewards
-	if (questHasRewards == false) then
-		--Storyline_NPCFrameRewards:Hide();
-		--GetQuestReward();
-	end;
 
 	Storyline_NPCFrameRewardsItemIcon:SetTexture(bestIcon);
 	contentHeight = contentHeight + Storyline_NPCFrameRewards.Content.Title:GetHeight() + 15;
@@ -942,7 +922,7 @@ local function handleEventSpecifics(event, texts, textIndex, eventInfo)
 	Storyline_NPCFrameChatOption2:SetScript("OnEnter", nil);
 	Storyline_NPCFrameChatOption3:SetScript("OnEnter", nil);
 	Storyline_NPCFrameObjectivesImage:SetTexture("Interface\\FriendsFrame\\FriendsFrameScrollIcon");
-	--QuestFrame_HideQuestPortrait();
+	QuestFrame_HideQuestPortrait();
 
 	if textIndex == #texts and eventHandlers[event] then
 		eventHandlers[event](eventInfo);
@@ -1164,7 +1144,6 @@ function Storyline_API.initEventsStructure()
 		QuestLogFrame:Hide();
 		startDialog("none", questDescription, "REPLAY", EVENT_INFO["REPLAY"]);
 	end);
-	questButton:Hide();
 
 
 	-- UI

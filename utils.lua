@@ -120,28 +120,22 @@ function Storyline_API.getAnimationByModel(model, animationType)
 end
 
 --CHANGES:Lanrutcon:SetAnimation was introduced in 5.0.4, implemented a similar function
---CHANGE:Shadovv: changed how playAnim works
-local function playAnim(model, sequence, duration)
-	
+local function playAnim(model, sequence)
 	model.timer = 0;
-	model.animationDuration = duration;
-	
+	if sequence == 3 then
+		model.timer = 5000;
 	--blood elf females have multiple "talk" emotes and it causes flickering, changing to emote 64/65
-	if((model:GetModel() == "character\\bloodelf\\female\\bloodelffemale.m2" or model:GetModel() == "creature\\ladysylvanaswindrunner\\ladysylvanaswindrunner.m2" or model:GetModel() == "creature\\alexstrasza\\ladyalexstrasa.m2") and sequence == 60) then
+	elseif(model:GetModel() == "character\\bloodelf\\female\\bloodelffemale.m2" and sequence == 60) then
 		sequence = math.random(64,65);
-		model.animationDuration = Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model:GetModel()][tostring(sequence)];
-	end;
-	
+	end
 	model:SetScript("OnUpdate", function(self, elapsed)
-		
-		self.timer = (self.timer + elapsed);
-		
-		if(self.timer > self.animationDuration or sequence == 0 or sequence == 3) then
+		--this stops onupdate script (if no animation is on queue, it will break after 4secs)
+		if(self.timer > 4000) then
 			self:SetScript("OnUpdate", nil);
 		else
-			self:SetSequenceTime(sequence, self.timer*1000);
-		end;
-		
+			model:SetSequenceTime(sequence, self.timer);
+			self.timer = (self.timer + (elapsed*1000))
+		end
 	end)
 	if model.debug then
 		model.debug:SetText(sequence);
@@ -150,12 +144,12 @@ end
 
 function Storyline_API.playAnimationDelay(model, sequence, duration, delay, token)
 	if delay == 0 then
-		playAnim(model, sequence, duration)
+		playAnim(model, sequence)
 	else
 		model.token = token;
 		after(delay, function()
 			if model.token == token then
-				playAnim(model, sequence, duration);
+				playAnim(model, sequence);
 			end
 		end)
 	end
@@ -167,8 +161,6 @@ local DEFAULT_SEQUENCE_TIME = 4;
 
 
 local function getDuration(model, sequence)
-	--print(model);
-	--SendChatMessage(model, "SAY", nil, nil);
 	sequence = tostring(sequence);
 	if Storyline_Data.debug.timing[model] and Storyline_Data.debug.timing[model][sequence] then
 		return Storyline_Data.debug.timing[model][sequence];
@@ -182,10 +174,10 @@ Storyline_API.getDuration = getDuration;
 local function playAndStand(model, sequence, duration)
 	local token = getId();
 	model.token = token
-	playAnim(model, sequence, duration);
+	playAnim(model, sequence);
 	after(duration, function()
 		if model.token == token then
-			playAnim(model, 0, duration);
+			playAnim(model, 3);
 		end
 	end);
 end

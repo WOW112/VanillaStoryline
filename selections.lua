@@ -55,7 +55,6 @@ local function getSelectionFontString(placeOn)
 	available:SetPoint("LEFT", 10, 0);
 	available:SetPoint("RIGHT", -10, 0);
 	available:SetPoint("TOP", placeOn, "BOTTOM", 0, -10);
-	--available:SetPoint("BOTTOMLEFT", placeOn);
 	return available;
 end
 
@@ -72,7 +71,6 @@ function Storyline_API.selectMultipleGossip(button)
 	local previous = Storyline_NPCFrameGossipChoices.Title;
 	local data = { GetGossipOptions() };
 	local height = 40;
-	local width = 280; --345
 	for i = 1, GetNumGossipOptions() do
 		local gossip, gossipType = data[(i * 2) - 1], data[(i * 2)];
 		previous = getSelectionFontString(previous);
@@ -83,7 +81,6 @@ function Storyline_API.selectMultipleGossip(button)
 		height = height + LINE_SPACING;
 	end
 	Storyline_NPCFrameGossipChoices:SetHeight(height);
-	Storyline_NPCFrameGossipChoices:SetWidth(width);
 end
 
 function Storyline_API.selectFirstAvailable()
@@ -107,7 +104,6 @@ function Storyline_API.selectMultipleAvailable(button)
 	local previous = Storyline_NPCFrameGossipChoices.Title;
 	local data = { GetGossipAvailableQuests() };
 	local height = 40;
-	local width = 250;
 	for i = 1, GetNumGossipAvailableQuests() do
 		--CHANGE:centurijon:isLegendary not returned in 3.4
 		--CHANGE:centurijon:frequency -> isDaily
@@ -120,7 +116,6 @@ function Storyline_API.selectMultipleAvailable(button)
 		height = height + LINE_SPACING;
 	end
 	Storyline_NPCFrameGossipChoices:SetHeight(height);
-	Storyline_NPCFrameGossipChoices:SetWidth(width);
 end
 
 function Storyline_API.selectFirstActive()
@@ -136,11 +131,9 @@ function Storyline_API.selectMultipleActive(button)
 	local previous = Storyline_NPCFrameGossipChoices.Title;
 	local data = { GetGossipActiveQuests() };
 	local height = 40;
-	local width = 250;
 	for i = 1, GetNumGossipActiveQuests() do
 		--CHANGE:centurijon:isLegendary not returned in 3.4
-		--CHANGE:Shadovv:isRepeatable return value for GetGossipActiveQuests() does not exist in 3.3.5
-		local title, lvl, isTrivial, isComplete = data[(i * 4) - 3], data[(i * 4) - 2], data[(i * 4) - 1], data[(i * 4)];
+		local title, lvl, isTrivial, isComplete, isRepeatable = data[(i * 5) - 4], data[(i * 5) - 3], data[(i * 5) - 2], data[(i * 5) - 1], data[(i * 5)];
 		previous = getSelectionFontString(previous);
 		previous.Text:SetText("|T" .. getQuestActiveIcon(isComplete) .. ":20:20|t" .. title .. getQuestTriviality(isTrivial));
 		previous:SetScript("OnClick", function(self)
@@ -149,7 +142,6 @@ function Storyline_API.selectMultipleActive(button)
 		height = height + LINE_SPACING;
 	end
 	Storyline_NPCFrameGossipChoices:SetHeight(height);
-	Storyline_NPCFrameGossipChoices:SetWidth(width);
 end
 
 function Storyline_API.selectMultipleActiveGreetings(button)
@@ -160,7 +152,6 @@ function Storyline_API.selectMultipleActiveGreetings(button)
 	Storyline_NPCFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
 	local previous = Storyline_NPCFrameGossipChoices.Title;
 	local height = 40;
-	local width = 250;
 	for i = 1, GetNumActiveQuests() do
 		local title, isComplete = GetActiveTitle(i);
 		--CHANGE:centurijon:isLegendary not returned in 3.4
@@ -174,7 +165,6 @@ function Storyline_API.selectMultipleActiveGreetings(button)
 		height = height + LINE_SPACING;
 	end
 	Storyline_NPCFrameGossipChoices:SetHeight(height);
-	Storyline_NPCFrameGossipChoices:SetWidth(width);
 end
 
 function Storyline_API.selectMultipleAvailableGreetings(button)
@@ -188,7 +178,6 @@ function Storyline_API.selectMultipleAvailableGreetings(button)
 	Storyline_NPCFrameGossipChoices.Title:SetText(loc("SL_SELECT_AVAILABLE_QUEST"));
 	local previous = Storyline_NPCFrameGossipChoices.Title;
 	local height = 40;
-	local width = 250;
 	for i = 1, numAvailableQuests do
 		local title, isComplete = GetAvailableTitle(i);
 		--CHANGE:centurijon:isLegendary not returned in 3.4
@@ -202,5 +191,4 @@ function Storyline_API.selectMultipleAvailableGreetings(button)
 		height = height + LINE_SPACING;
 	end
 	Storyline_NPCFrameGossipChoices:SetHeight(height);
-	Storyline_NPCFrameGossipChoices:SetWidth(width);
 end
