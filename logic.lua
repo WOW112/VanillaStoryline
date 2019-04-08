@@ -16,17 +16,17 @@
 --	limitations under the License.
 ----------------------------------------------------------------------------------
 
--- 更改Storyline API
+-- Storyline API
 local setTooltipForSameFrame, setTooltipAll = Storyline_API.lib.setTooltipForSameFrame, Storyline_API.lib.setTooltipAll;
 local registerHandler = Storyline_API.lib.registerHandler;
 local loc = Storyline_API.locale.getText;
 local playNext = Storyline_API.playNext;
 
--- 更改WOW API
+-- WOW API
 local strsplit, pairs = strsplit, pairs;
 local UnitIsUnit, UnitExists, UnitName = UnitIsUnit, UnitExists, UnitName;
 
--- UI地址
+-- UI
 local Storyline_NPCFrame = Storyline_NPCFrame;
 local Storyline_NPCFrameChat, Storyline_NPCFrameChatText = Storyline_NPCFrameChat, Storyline_NPCFrameChatText;
 local Storyline_NPCFrameChatNext, Storyline_NPCFrameChatPrevious = Storyline_NPCFrameChatNext, Storyline_NPCFrameChatPrevious;
@@ -35,7 +35,7 @@ local Storyline_NPCFrameDebugText, Storyline_NPCFrameChatName, Storyline_NPCFram
 local Storyline_NPCFrameTitle, Storyline_NPCFrameDebugModelYou, Storyline_NPCFrameDebugModelMe = Storyline_NPCFrameTitle, Storyline_NPCFrameDebugModelYou, Storyline_NPCFrameDebugModelMe;
 local Storyline_NPCFrameDebugScaleSlider = Storyline_NPCFrameDebugScaleSlider;
 
--- 常量
+-- Constants
 local DEBUG = true;
 local LINE_FEED_CODE = string.char(10);
 local CARRIAGE_RETURN_CODE = string.char(13);
@@ -87,7 +87,7 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 
 	local guid = UnitGUID(targetType);
 	local type, zero, server_id, instance_id, zone_uid, npc_id, spawn_uid = strsplit("-", guid or "");
-	-- 修复出现任务桌上的特殊文字
+	-- Dirty if to fix the flavor text appearing on naval mission table because Blizzard…
 	if npc_id == "94399" then
 		SelectGossipOption(1);
 		return;
@@ -136,7 +136,15 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	if UnitExists(targetType) and not UnitIsUnit("player", targetType) then --"npc") then
 		Storyline_NPCFrameModelsYou:SetUnit(targetType, false);
 	else
+		--CHANGES:Lanrutcon:Commented "broken" stuff, added similar functions (No Pandarean models and animations)
+		--Storyline_NPCFrameModelsMe:SetAnimation(520);
+		--Storyline_NPCFrameModelsYou:SetModel("world/expansion04/doodads/pandaren/scroll/pa_scroll_10.mo3");
 		Storyline_API.playAnimationDelay(Storyline_NPCFrameModelsYou, 520, 100, 10);
+		--Storyline_NPCFrameModelsYou:SetModel("World\\Expansion02\\doodads\\dalaran\\dalaran_bookcase_01.m2");
+		--Storyline_NPCFrameModelsYou:SetScale(1.2);
+		--Storyline_NPCFrameModelsYou:SetPosition(0,-0.1,1.5);
+		
+		--CHANGES:Shadovv:changed bookcase to open book + "reading a book" animation
 		Storyline_NPCFrameModelsYou:SetModel("world\\generic\\human\\passive doodads\\books\\BookLargeOpen02.m2");
 		Storyline_NPCFrameModelsYou:SetPosition(0,-0.5,-0.4);
 		Storyline_NPCFrameModelsMe:SetPosition(0, 0, 0.25);
@@ -159,6 +167,7 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 	end
 	Storyline_NPCFrameDebugScaleSlider:SetValue(scale);
 	
+	--CHANGE:Shadovv: changes position of some creatures defined in structures
 	if (Storyline_C_POSITION[Storyline_NPCFrameModelsYou.model] ~= nil) then
 		Storyline_NPCFrameModelsYou:SetPosition(Storyline_C_POSITION[Storyline_NPCFrameModelsYou.model][1],Storyline_C_POSITION[Storyline_NPCFrameModelsYou.model][2],Storyline_C_POSITION[Storyline_NPCFrameModelsYou.model][3]);
 	end;
@@ -181,7 +190,7 @@ function Storyline_API.startDialog(targetType, fullText, event, eventInfo)
 end
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- 文字动画
+-- TEXT ANIMATION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local ANIMATION_TEXT_SPEED = 80;

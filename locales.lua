@@ -108,14 +108,14 @@ local effectiveLocal = {};
 local localeFont;
 local current;
 
--- 更改插件的初始化设置（更换了API名称而已）
+-- Initialize a locale for the addon.
 function Storyline_API.locale.init()
-	-- 配置注册
+	-- Register config
 	current = Storyline_Data.config.locale or DEFAULT_LOCALE;
 	if not LOCALS[current] then
 		current = DEFAULT_LOCALE;
 	end
-	-- 字体设置（需要更换字体直接替换即可）
+	-- Pick the right font
 	if current == "zhCN" then
 		localeFont = "Fonts\\ZYKai_T.TTF";
 	elseif current == "ruRU" then
@@ -128,6 +128,9 @@ function Storyline_API.locale.init()
 	Storyline_API.locale.localeFont = localeFont;
 end
 
+--	Return the localized text link to this key.
+--	If the key isn't present in the current Locals table, then return the default localization.
+--	If the key is totally unknown from TRP3, then an error will be lifted.
 local function getText(key)
 	if effectiveLocal[key] or LOCALS[DEFAULT_LOCALE].localeContent[key] then
 		return effectiveLocal[key] or LOCALS[DEFAULT_LOCALE].localeContent[key];
@@ -136,6 +139,7 @@ local function getText(key)
 end
 Storyline_API.locale.getText = getText;
 
+--CHANGE:Shadovv: SetClampedTextureRotation function was implemented in cataclysm
 function SetClampedTextureRotation(texture, rotationDegrees)
 	if (rotationDegrees ~= 0 and rotationDegrees ~= 90 and rotationDegrees ~= 180 and rotationDegrees ~= 270) then
 		error("SetRotation: rotationDegrees must be 0, 90, 180, or 270");

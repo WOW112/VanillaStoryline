@@ -55,10 +55,10 @@ end
 
 
 
--- 同上
+-- Storyline API
 local getId = Storyline_API.lib.generateID;
 
--- 同上
+-- WOW API
 local after, tostring = C_Timer.After, tostring;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
@@ -66,7 +66,8 @@ local after, tostring = C_Timer.After, tostring;
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local function getQuestIcon(isDaily, isRepeatable)
-
+    --CHANGE:centurijon:isLegendary not available in 3.4
+    --CHANGE:centurijon:frequency -> isDaily
 	if (isDaily) then
 		return "Interface\\GossipFrame\\DailyQuestIcon";
 	elseif (isRepeatable) then
@@ -101,7 +102,7 @@ end
 Storyline_API.getQuestLevelColor = getQuestLevelColor;
 
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
--- 动画
+-- SOME ANIMATION
 --*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
 
 local Storyline_ANIM_MAPPING, Storyline_DEFAULT_ANIM_MAPPING = Storyline_ANIM_MAPPING, Storyline_DEFAULT_ANIM_MAPPING;
@@ -118,13 +119,14 @@ function Storyline_API.getAnimationByModel(model, animationType)
 	return Storyline_DEFAULT_ANIM_MAPPING[animationType];
 end
 
-
+--CHANGES:Lanrutcon:SetAnimation was introduced in 5.0.4, implemented a similar function
+--CHANGE:Shadovv: changed how playAnim works
 local function playAnim(model, sequence, duration)
 	
 	model.timer = 0;
 	model.animationDuration = duration;
 	
-	-- 血精灵女性有多个“谈话”表情，它会导致闪烁，变成表情64/65
+	--blood elf females have multiple "talk" emotes and it causes flickering, changing to emote 64/65
 	if((model:GetModel() == "character\\bloodelf\\female\\bloodelffemale.m2" or model:GetModel() == "creature\\ladysylvanaswindrunner\\ladysylvanaswindrunner.m2" or model:GetModel() == "creature\\alexstrasza\\ladyalexstrasa.m2") and sequence == 60) then
 		sequence = math.random(64,65);
 		model.animationDuration = Storyline_ANIMATION_SEQUENCE_DURATION_BY_MODEL[model:GetModel()][tostring(sequence)];
@@ -165,7 +167,8 @@ local DEFAULT_SEQUENCE_TIME = 4;
 
 
 local function getDuration(model, sequence)
-
+	--print(model);
+	--SendChatMessage(model, "SAY", nil, nil);
 	sequence = tostring(sequence);
 	if Storyline_Data.debug.timing[model] and Storyline_Data.debug.timing[model][sequence] then
 		return Storyline_Data.debug.timing[model][sequence];

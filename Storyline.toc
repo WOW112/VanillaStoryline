@@ -7,5 +7,4 @@
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## SavedVariables: Storyline_Data
-## 移植 Artwork talentframe  LIB更换版本
 ui.xml
